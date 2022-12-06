@@ -1,4 +1,16 @@
 .chess-board { border-spacing: 0;}
 .chess-board td {width: 1.5em; height: 1.5em; text-align: center; font-size: 32px;}
-.chess-board .light { background: #E1FAF9; }
-.chess-board .dark { background: #277C82; }
+.chess-board .light {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+
+    background: #E1FAF9;
+}
+.chess-board .dark {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+
+    background: #277C82;
+}
