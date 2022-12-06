@@ -44,18 +44,21 @@ class Board {
 function update_interface(board) {
     var table = document.getElementById("chess-board");
 
+    if (table === null) {
+        return;
+    }
+
     for (let i=0; i<8; i++) {
         for (let j=0; j<8; j++) {
             let square =  board.data[i*8 + j];
             if (square !== null) {
-                console.log(square);
                 table.rows[7-i].cells[j+1].innerText = square.text;
             }
         }
     }
 }
 
-function main() {
+window.onload = function main() {
     let b = new Board()
     update_interface(b)
 }
