@@ -1,16 +1,25 @@
 .chess-board { border-spacing: 0;}
-.chess-board td {width: 1.5em; height: 1.5em; text-align: center; font-size: 32px;}
-.chess-board .light {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+.chess-board td {
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    cursor: move;
+    font-size: 46px;
 
-    background: #E1FAF9;
+    /* Disable text selection for Safari, IE and others */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
-.chess-board .dark {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
 
-    background: #277C82;
+.chess-board .light {background: #E1FAF9;}
+.chess-board .dark {background: #277C82;}
+
+.drag {
+    position: absolute;
+    width: 2em;
+    height: 2em; 
+    text-align: center; 
+    font-size: 46px;
+    /* font size needs to be the same as chess-board */
 }
