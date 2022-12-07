@@ -22,4 +22,12 @@
     text-align: center; 
     font-size: 46px;
     /* font size needs to be the same as chess-board */
+
+    /* Make div not clickable */
+    pointer-events:none;
+
+    /* Disable text selection for Safari, IE and others */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
