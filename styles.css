@@ -1,10 +1,10 @@
 .chess-board { border-spacing: 0;}
 .chess-board td {
     width: 2em;
-    height: 2em;
+    height: 2em;    
     text-align: center;
     cursor: move;
-    font-size: 46px;
+    font-size: 5vmin;
 
     /* Disable text selection for Safari, IE and others */
     -webkit-user-select: none;
@@ -20,7 +20,7 @@
     width: 2em;
     height: 2em; 
     text-align: center; 
-    font-size: 46px;
+    font-size: 5vmin;
     /* font size needs to be the same as chess-board */
 
     /* Make div not clickable */
