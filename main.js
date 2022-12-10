@@ -11,6 +11,7 @@ const B_BISHOP = "v";
 const B_QUEEN = "w";
 const B_KING = "l";
 const B_PAWN = "o";
+const DUCK = "🐥";
 
 
 class Board {
@@ -45,7 +46,6 @@ class Board {
         this.setPiece(6, 7, B_KNIGHT);
         this.setPiece(7, 7, B_ROOK);
 
-        this.setPiece(4, 4, "🐥");
         for (let i=0; i<8; i++) {
             this.setPiece(i, 6, B_PAWN);
             this.setPiece(i, 1, W_PAWN);
