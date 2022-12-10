@@ -1,6 +1,6 @@
 @font-face {
     font-family: chess;
-    src: url(Fonts/merifont.ttf);
+    src: url(fonts/merifont.ttf);
 }
 
 .chess-board { border-spacing: 0; margin: auto;}
