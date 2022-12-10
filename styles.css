@@ -1,6 +1,4 @@
 .chess-board { border-spacing: 0; margin: auto;}
-
-
 .chess-board .light {background: #E1FAF9;}
 .chess-board .dark {background: #277C82; touch-action: none;}
 .chess-board td {
@@ -22,6 +20,9 @@
 
 .drag {
     position: absolute;
+    width: 1.5em;
+    height: 1.5em;    
+    text-align: center;
     font-size: 7vmin;
     /* font size needs to be the same as in chess-board */
 

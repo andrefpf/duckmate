@@ -1,141 +1,128 @@
-class Piece {
-    constructor(text) {
-        this.text = text;
-    }
-}
-
 class Board {
     constructor() {
-        this.data = Array(8*8).fill(null);
+        this.table = document.getElementById("chess-board");
         this.rearrange();
     }
 
-    move(origin, target) {
-        if (origin == target) {
-            return
-        }
-        this.data[target] = this.data[origin];
-        this.data[origin] = null;
+    move(x0, y0, x1, y1) {
+        console.log(x0, y0);
+        console.log(x1, y1);
+        let data = this.getPiece(x0, y0);
+        this.setPiece(x0, y0, "");
+        this.setPiece(x1, y1, data);
+    }
+
+    setPiece(x, y, text) {
+        this.table.rows[7 - y].cells[1 + x].innerText = text;
+    }
+
+    getPiece(x, y) {
+        return this.table.rows[7 - y].cells[1 + x].innerText
     }
 
     rearrange() {
-        this.data[0] = new Piece("♜");
-        this.data[7] = new Piece("♜");
-        this.data[1] = new Piece("♞");
-        this.data[6] = new Piece("♞");
-        this.data[2] = new Piece("♝");
-        this.data[5] = new Piece("♝");
-        this.data[3] = new Piece("♛");
-        this.data[4] = new Piece("♚");
-        
-        for (let i=8; i<16; i++) {
-            this.data[i] = new Piece("♟︎");
-        }
-        
-        this.data[8*4 + 4] = new Piece("🐥")
-        
-        this.data[56 + 0] = new Piece("♖");
-        this.data[56 + 7] = new Piece("♖");
-        this.data[56 + 1] = new Piece("♘");
-        this.data[56 + 6] = new Piece("♘");
-        this.data[56 + 2] = new Piece("♗");
-        this.data[56 + 5] = new Piece("♗");
-        this.data[56 + 3] = new Piece("♕");
-        this.data[56 + 4] = new Piece("♔");
+        this.setPiece(0, 7, "♜");
+        this.setPiece(1, 7, "♞");
+        this.setPiece(2, 7, "♝");
+        this.setPiece(3, 7, "♛");
+        this.setPiece(4, 7, "♚");
+        this.setPiece(5, 7, "♝");
+        this.setPiece(6, 7, "♞");
+        this.setPiece(7, 7, "♜");
 
-        for (let i=(40+8); i<(40+16); i++) {
-            this.data[i] = new Piece("♙");
+        this.setPiece(4, 4, "🐥");
+        for (let i=0; i<8; i++) {
+            this.setPiece(i, 6, "♟︎");
+            this.setPiece(i, 1, "♙");
         }
+
+        this.setPiece(0, 0, "♖");
+        this.setPiece(1, 0, "♘");
+        this.setPiece(2, 0, "♗");
+        this.setPiece(3, 0, "♕");
+        this.setPiece(4, 0, "♔");
+        this.setPiece(5, 0, "♗");
+        this.setPiece(6, 0, "♘");
+        this.setPiece(7, 0, "♖");
     }
 }
 
-var x;
-var y;
+var startX, startY;
+var startElement;
+var originIndex, targetIndex;
 var board;
-var table;
-var draggablePiece;
+var x, y;
 
-function updateInterface(board) {
-    for (let i=0; i<8; i++) {
-        for (let j=0; j<8; j++) {
-            let square =  board.data[i*8 + j];
-            let data = (square !== null) ? square.text : "";
-            table.rows[i].cells[j+1].innerText = data;
-        }
-    }
-}
-
-const mouseDownHandler = function (e) {
-    draggablePiece = document.getElementById("draggable-piece");
+const grabHandler = function (e) {
+    let draggablePiece = document.getElementById("draggable-piece");
     draggablePiece.innerText = e.target.innerText;
-    
-    // Calculate the mouse position
+    startElement = e.target;
+
     const rect = e.target.getBoundingClientRect();
-    x = e.pageX - rect.left;
-    y = e.pageY - rect.top;
+    x = rect.left;
+    y = rect.top;
 
     if (e.type == "touchstart" ) {
-        x = e.touches[0].pageX - rect.left;
-        y = e.touches[0].pageY - rect.top;
+        startX = e.touches[0].pageX - x;
+        startY = e.touches[0].pageY - y;
 
     } else {
-        x = e.pageX - rect.left;
-        y = e.pageY - rect.top;
+        startX = e.pageX - x;
+        startY = e.pageY - y;
     }
 
-    draggablePiece.style.top = `${rect.top}px`;
-    draggablePiece.style.left = `${rect.left}px`;
+    table = document.getElementById("chess-board");
+    originIndex = [].slice.call(board.table.querySelectorAll('td')).indexOf(e.target);
 
-    originIndex = [].slice.call(table.querySelectorAll('td')).indexOf(e.target);
-    console.log("Origin:", originIndex);
+    draggablePiece.style.left = `${x}px`;
+    draggablePiece.style.top = `${y}px`;
 
-    // Attach the listeners to `document`
-    document.addEventListener("mousemove", mouseMoveHandler);
-    document.addEventListener("mouseup", mouseUpHandler);
-    document.addEventListener("touchmove", mouseMoveHandler);
-    document.addEventListener("touchend", mouseUpHandler);
+    document.addEventListener("mousemove", moveHandler);
+    document.addEventListener("mouseup", releaseHandler);
+    document.addEventListener("touchmove", moveHandler);
+    document.addEventListener("touchend", releaseHandler);
+}
 
-};
-
-const mouseMoveHandler = function (e) {
-    // Set position for dragging element
+const moveHandler = function (e) {
     if (e.type == "touchmove" ) {
-        draggablePiece.style.top = `${e.touches[0].pageY - y}px`;
-        draggablePiece.style.left = `${e.touches[0].pageX - x}px`;
-
+        x = e.touches[0].pageX - startX;
+        y = e.touches[0].pageY - startY;
     } else {
-        draggablePiece.style.top = `${e.pageY - y}px`;
-        draggablePiece.style.left = `${e.pageX - x}px`;
+        x = e.pageX - startX;
+        y = e.pageY - startY;   
     }
-};
+    
+    let draggablePiece = document.getElementById("draggable-piece");
+    draggablePiece.style.left = `${x}px`;
+    draggablePiece.style.top = `${y}px`;
+}
 
-const mouseUpHandler = function (e) {
-    // Remove the position styles
+const releaseHandler = function (e) {
+    let draggablePiece = document.getElementById("draggable-piece");
     draggablePiece.style.removeProperty("top");
     draggablePiece.style.removeProperty("left");
     draggablePiece.innerText = "";
+    
+    let target = document.elementFromPoint(x + startX, y + startY);
+    targetIndex = [].slice.call(board.table.querySelectorAll('td')).indexOf(target);
 
-    targetIndex = [].slice.call(table.querySelectorAll('td')).indexOf(e.target);
+    board.move(
+        originIndex % 8,
+        7 - Math.floor(originIndex / 8), 
+        targetIndex % 8,
+        7 - Math.floor(targetIndex / 8), 
+    )
 
-    board.move(originIndex, targetIndex);
-    updateInterface(board);
-
-    // Remove the handlers of `mousemove` and `mouseup`
-    document.removeEventListener("mousemove", mouseMoveHandler);    
-    document.removeEventListener("mouseup", mouseUpHandler);
-    document.removeEventListener("touchmove", mouseMoveHandler);
-    document.removeEventListener("touchend", mouseUpHandler);
-};
+    document.removeEventListener("mousemove", moveHandler);    
+    document.removeEventListener("mouseup", releaseHandler);
+    document.removeEventListener("touchmove", moveHandler);
+    document.removeEventListener("touchend", releaseHandler);
+}
 
 window.onload = function main() {
-    table = document.getElementById("chess-board");
-    
-    table.querySelectorAll("td").forEach(function (item) {
-        item.addEventListener("mousedown", mouseDownHandler);
-        item.addEventListener("touchstart", mouseDownHandler);
+    board = new Board();    
+    board.table.querySelectorAll("td").forEach(function (item) {
+        item.addEventListener("mousedown", grabHandler);
+        item.addEventListener("touchstart", grabHandler);
     });
-
-
-    board = new Board();
-    updateInterface(board);
 }
