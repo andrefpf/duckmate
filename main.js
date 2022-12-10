@@ -69,6 +69,10 @@ var board;
 var x, y;
 
 const grabHandler = function (e) {
+    if (e.target.innerText == "") {
+        return;
+    }
+
     let draggablePiece = document.getElementById("draggable-piece");
     draggablePiece.innerText = e.target.innerText;
     startElement = e.target;
