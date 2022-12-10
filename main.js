@@ -6,7 +6,7 @@ const W_KING = "k";
 const W_PAWN = "p";
 
 const B_ROOK = "t";
-const B_KNIGHT = "l";
+const B_KNIGHT = "m";
 const B_BISHOP = "v";
 const B_QUEEN = "w";
 const B_KING = "l";
