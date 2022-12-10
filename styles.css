@@ -1,10 +1,14 @@
-.chess-board { border-spacing: 0;}
+.chess-board { border-spacing: 0; margin: auto;}
+
+
+.chess-board .light {background: #E1FAF9;}
+.chess-board .dark {background: #277C82; touch-action: none;}
 .chess-board td {
-    width: 2em;
-    height: 2em;    
+    width: 1.5em;
+    height: 1.5em;    
     text-align: center;
     cursor: move;
-    font-size: 5vmin;
+    font-size: 7vmin;
 
     /* Disable text selection for Safari, IE and others */
     -webkit-user-select: none;
@@ -12,19 +16,18 @@
     user-select: none;
 }
 
-.chess-board .light {background: #E1FAF9;}
-.chess-board .dark {background: #277C82;}
+.center {
+    margin: auto;
+}
 
 .drag {
     position: absolute;
-    width: 2em;
-    height: 2em; 
-    text-align: center; 
-    font-size: 5vmin;
-    /* font size needs to be the same as chess-board */
+    font-size: 7vmin;
+    /* font size needs to be the same as in chess-board */
 
     /* Make div not clickable */
     pointer-events:none;
+    touch-action:none;
 
     /* Disable text selection for Safari, IE and others */
     -webkit-user-select: none;

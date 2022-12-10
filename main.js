@@ -11,6 +11,9 @@ class Board {
     }
 
     move(origin, target) {
+        if (origin == target) {
+            return
+        }
         this.data[target] = this.data[origin];
         this.data[origin] = null;
     }
@@ -70,8 +73,18 @@ const mouseDownHandler = function (e) {
     const rect = e.target.getBoundingClientRect();
     x = e.pageX - rect.left;
     y = e.pageY - rect.top;
-    draggablePiece.style.top = `${e.pageY - y}px`;
-    draggablePiece.style.left = `${e.pageX - x}px`;
+
+    if (e.type == "touchstart" ) {
+        x = e.touches[0].pageX - rect.left;
+        y = e.touches[0].pageY - rect.top;
+
+    } else {
+        x = e.pageX - rect.left;
+        y = e.pageY - rect.top;
+    }
+
+    draggablePiece.style.top = `${rect.top}px`;
+    draggablePiece.style.left = `${rect.left}px`;
 
     originIndex = [].slice.call(table.querySelectorAll('td')).indexOf(e.target);
     console.log("Origin:", originIndex);
@@ -79,12 +92,21 @@ const mouseDownHandler = function (e) {
     // Attach the listeners to `document`
     document.addEventListener("mousemove", mouseMoveHandler);
     document.addEventListener("mouseup", mouseUpHandler);
+    document.addEventListener("touchmove", mouseMoveHandler);
+    document.addEventListener("touchend", mouseUpHandler);
+
 };
 
 const mouseMoveHandler = function (e) {
     // Set position for dragging element
-    draggablePiece.style.top = `${e.pageY - y}px`;
-    draggablePiece.style.left = `${e.pageX - x}px`;
+    if (e.type == "touchmove" ) {
+        draggablePiece.style.top = `${e.touches[0].pageY - y}px`;
+        draggablePiece.style.left = `${e.touches[0].pageX - x}px`;
+
+    } else {
+        draggablePiece.style.top = `${e.pageY - y}px`;
+        draggablePiece.style.left = `${e.pageX - x}px`;
+    }
 };
 
 const mouseUpHandler = function (e) {
@@ -94,24 +116,15 @@ const mouseUpHandler = function (e) {
     draggablePiece.innerText = "";
 
     targetIndex = [].slice.call(table.querySelectorAll('td')).indexOf(e.target);
-    console.log("Target:", targetIndex);
-    // console.log(e.target.innerText);
 
     board.move(originIndex, targetIndex);
     updateInterface(board);
 
-
-    // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa");
-    // console.log(e);
-    // console.log(table);
-
-    // x = null;
-    // y = null;
-    // draggablePiece = null;
-
     // Remove the handlers of `mousemove` and `mouseup`
     document.removeEventListener("mousemove", mouseMoveHandler);    
     document.removeEventListener("mouseup", mouseUpHandler);
+    document.removeEventListener("touchmove", mouseMoveHandler);
+    document.removeEventListener("touchend", mouseUpHandler);
 };
 
 window.onload = function main() {
@@ -119,6 +132,7 @@ window.onload = function main() {
     
     table.querySelectorAll("td").forEach(function (item) {
         item.addEventListener("mousedown", mouseDownHandler);
+        item.addEventListener("touchstart", mouseDownHandler);
     });
 
 
