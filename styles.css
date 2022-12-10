@@ -13,7 +13,7 @@
     text-align: center;
     cursor: move;
 
-    font-size: 7vmin;
+    font-size: 8vmin;
     font-family: chess;
 
     /* Disable text selection for Safari, IE and others */
@@ -32,7 +32,7 @@ body {
     height: 1.5em;    
     text-align: center;
     
-    font-size: 7vmin;
+    font-size: 8vmin;
     font-family: chess;
     /* font size needs to be the same as in chess-board */
     
