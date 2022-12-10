@@ -13,7 +13,7 @@
     text-align: center;
     cursor: move;
 
-    font-size: 8vmin;
+    font-size: 7.5  vmin;
     font-family: chess;
 
     /* Disable text selection for Safari, IE and others */
