@@ -6,7 +6,7 @@
 .chess-board { border-spacing: 0; margin: auto;}
 .chess-board .light {background: #E1FAF9;}
 .chess-board .dark {background: #277C82; touch-action: none;}
-.chess-board th {color: #E1FAF9; padding-right: 0.5em;}
+.chess-board th {font-size: 2vmin; color: #E1FAF9;}
 .chess-board td {
     width: 1.5em;
     height: 1.5em;    
