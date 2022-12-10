@@ -1,3 +1,18 @@
+const W_ROOK = "r";
+const W_KNIGHT = "n";
+const W_BISHOP = "b";
+const W_QUEEN = "q";
+const W_KING = "k";
+const W_PAWN = "p";
+
+const B_ROOK = "t";
+const B_KNIGHT = "l";
+const B_BISHOP = "v";
+const B_QUEEN = "w";
+const B_KING = "l";
+const B_PAWN = "o";
+
+
 class Board {
     constructor() {
         this.table = document.getElementById("chess-board");
@@ -21,29 +36,29 @@ class Board {
     }
 
     rearrange() {
-        this.setPiece(0, 7, "♜");
-        this.setPiece(1, 7, "♞");
-        this.setPiece(2, 7, "♝");
-        this.setPiece(3, 7, "♛");
-        this.setPiece(4, 7, "♚");
-        this.setPiece(5, 7, "♝");
-        this.setPiece(6, 7, "♞");
-        this.setPiece(7, 7, "♜");
+        this.setPiece(0, 7, B_ROOK);
+        this.setPiece(1, 7, B_KNIGHT);
+        this.setPiece(2, 7, B_BISHOP);
+        this.setPiece(3, 7, B_QUEEN);
+        this.setPiece(4, 7, B_KING);
+        this.setPiece(5, 7, B_BISHOP);
+        this.setPiece(6, 7, B_KNIGHT);
+        this.setPiece(7, 7, B_ROOK);
 
         this.setPiece(4, 4, "🐥");
         for (let i=0; i<8; i++) {
-            this.setPiece(i, 6, "♟︎");
-            this.setPiece(i, 1, "♙");
+            this.setPiece(i, 6, B_PAWN);
+            this.setPiece(i, 1, W_PAWN);
         }
 
-        this.setPiece(0, 0, "♖");
-        this.setPiece(1, 0, "♘");
-        this.setPiece(2, 0, "♗");
-        this.setPiece(3, 0, "♕");
-        this.setPiece(4, 0, "♔");
-        this.setPiece(5, 0, "♗");
-        this.setPiece(6, 0, "♘");
-        this.setPiece(7, 0, "♖");
+        this.setPiece(0, 0, W_ROOK);
+        this.setPiece(1, 0, W_KNIGHT);
+        this.setPiece(2, 0, W_BISHOP);
+        this.setPiece(3, 0, W_QUEEN);
+        this.setPiece(4, 0, W_KING);
+        this.setPiece(5, 0, W_BISHOP);
+        this.setPiece(6, 0, W_KNIGHT);
+        this.setPiece(7, 0, W_ROOK);
     }
 }
 
