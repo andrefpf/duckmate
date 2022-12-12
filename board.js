@@ -13,6 +13,17 @@ const B_KING = "l";
 const B_PAWN = "o";
 const DUCK = "🐥";
 
+white_pieces = [W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_PAWN];
+black_pieces = [B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_PAWN];
+
+function isWhite(piece) {
+    return white_pieces.includes(piece);
+}
+
+function isBlack(piece) {
+    return black_pieces.includes(piece);
+}    
+
 
 class Board {
     constructor() {
@@ -22,6 +33,11 @@ class Board {
 
     move(x0, y0, x1, y1) {
         let data = this.getPiece(x0, y0);
+
+        if (data == "") {
+            return
+        }
+
         this.setPiece(x0, y0, "");
         this.setPiece(x1, y1, data);
     }
@@ -32,6 +48,38 @@ class Board {
 
     getPiece(x, y) {
         return this.table.rows[7 - y].cells[1 + x].innerText
+    }
+
+    getWhitePieces() {
+        let piece;
+        let pieces = new Array();
+
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
+                piece = this.getPiece(i, j);
+                if (isWhite(piece)) {
+                    pieces.push({x:i, y:j, piece:piece});
+                }
+            }
+        }
+
+        return pieces;
+    }
+
+    getBlackPieces() {
+        let piece;
+        let pieces = new Array();
+
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
+                piece = this.getPiece(i, j);
+                if (isBlack(piece)) {
+                    pieces.push({x:i, y:j, piece:piece});
+                }
+            }
+        }
+
+        return pieces;
     }
 
     rearrange() {

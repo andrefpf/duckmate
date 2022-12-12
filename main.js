@@ -1,7 +1,7 @@
 var startX, startY;
 var startElement;
 var originIndex, targetIndex;
-var board;
+var game;
 var x, y;
 
 const grabHandler = function (e) {
@@ -26,8 +26,7 @@ const grabHandler = function (e) {
         startY = e.pageY - y;
     }
 
-    table = document.getElementById("chess-board");
-    originIndex = [].slice.call(board.table.querySelectorAll('td')).indexOf(e.target);
+    originIndex = [].slice.call(game.board.table.querySelectorAll('td')).indexOf(e.target);
 
     draggablePiece.style.left = `${x}px`;
     draggablePiece.style.top = `${y}px`;
@@ -59,14 +58,15 @@ const releaseHandler = function (e) {
     draggablePiece.innerText = "";
     
     let target = document.elementFromPoint(x + startX, y + startY);
-    targetIndex = [].slice.call(board.table.querySelectorAll('td')).indexOf(target);
+    targetIndex = [].slice.call(game.board.table.querySelectorAll('td')).indexOf(target);
 
-    board.move(
+    game.move(
         originIndex % 8,
         7 - Math.floor(originIndex / 8), 
         targetIndex % 8,
         7 - Math.floor(targetIndex / 8), 
     )
+    game.letEngineMove();
 
     document.removeEventListener("mousemove", moveHandler);    
     document.removeEventListener("mouseup", releaseHandler);
@@ -75,8 +75,8 @@ const releaseHandler = function (e) {
 }
 
 window.onload = function main() {
-    board = new Board();    
-    board.table.querySelectorAll("td").forEach(function (item) {
+    game = new Game();
+    game.board.table.querySelectorAll("td").forEach(function (item) {
         item.addEventListener("mousedown", grabHandler);
         item.addEventListener("touchstart", grabHandler);
     });

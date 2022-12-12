@@ -2,18 +2,17 @@ WHITE = 0
 BLACK = 1
 
 class Game {
-    constructor(color) {
-        this.color = color;
-        this.board = Board();
-        this.enemy = Engine();
+    constructor() {
+        this.color = BLACK;
+        this.board = new Board();
+        this.enemy = new Engine();
     }
 
     restart() {
         this.board.rearange();
 
         if (this.color == BLACK) {
-            let move = this.enemy.getMove();
-            this.move(move.x0, move.y0, move.x1, move.y1);
+            this.getEngineMove();
         }
     }
 
@@ -22,7 +21,12 @@ class Game {
             return;
         }
 
-        this.board.move(x0, y0, x1, y1);
+        this.board.move(x0, y0, x1, y1);   
+    }
+
+    letEngineMove() {
+        let move = this.enemy.getMove(this.board);
+        this.move(move.x0, move.y0, move.x1, move.y1);
     }
 
     validMovement(x0, y0, x1, y1) {
