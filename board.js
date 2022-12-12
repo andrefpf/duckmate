@@ -50,6 +50,17 @@ class Board {
         return this.table.rows[7 - y].cells[1 + x].innerText
     }
 
+    getColor(x, y) {
+        let piece = this.getPiece(x, y);
+        if (isWhite(piece)) {
+            return "white";
+        }
+        else if (isBlack(piece)) {
+            return "black";
+        }
+        return "";    
+    }
+
     getWhitePieces() {
         let piece;
         let pieces = new Array();

@@ -1,28 +1,37 @@
 // It is probably too time intensive to be calculated here.
 // I will rewrite this in c++ or Rust and this Engine class will be just a proxy.
 
+function pickRandom(array) {
+    return array[Math.floor(Math.random() * array.length)]
+}
+
 class Engine {
     getMove(board) {
         let move;
-        let targetSquare;
 
         let pieces = board.getBlackPieces();
-        let randomPiece = pieces[Math.floor(Math.random() * pieces.length)];
-
+        let targets;
+        let randomOrigin;
+        let randomTarget;
+        
         while (true) {
-            move = {
-                x0: randomPiece.x,
-                y0: randomPiece.y,
-                x1: Math.floor(Math.random() * 8),
-                y1: Math.floor(Math.random() * 8),
-            };
-
-            targetSquare = board.getPiece(move.x1, move.y1);
-            if (!isBlack(targetSquare)) {
-                break;
+            randomOrigin = pickRandom(pieces);
+            targets = pieceMoves(randomOrigin.x, randomOrigin.y, board);
+            
+            if (targets.length == 0) {
+                // Can't move, try again
+                continue;
             }
+            
+            randomTarget = pickRandom(targets);
+            move = {
+                x0: randomOrigin.x,
+                y0: randomOrigin.y,
+                x1: randomTarget.x,
+                y1: randomTarget.y,
+            };
+    
+            return move;
         }
-
-        return move;
     }
 }
