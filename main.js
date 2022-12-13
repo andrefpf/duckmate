@@ -5,10 +5,6 @@ var game;
 var x, y;
 
 const grabHandler = function (e) {
-    if (e.target.innerText == "") {
-        return;
-    }
-
     let draggablePiece = document.getElementById("draggable-piece");
     draggablePiece.innerText = e.target.innerText;
     startElement = e.target;
@@ -60,13 +56,16 @@ const releaseHandler = function (e) {
     let target = document.elementFromPoint(x + startX, y + startY);
     targetIndex = [].slice.call(game.board.table.querySelectorAll('td')).indexOf(target);
 
-    game.move(
+    let moved = game.move(
         originIndex % 8,
         7 - Math.floor(originIndex / 8), 
         targetIndex % 8,
         7 - Math.floor(targetIndex / 8), 
     )
-    game.letEngineMove();
+
+    if (moved) {
+        game.letEngineMove();
+    }
 
     document.removeEventListener("mousemove", moveHandler);    
     document.removeEventListener("mouseup", releaseHandler);
