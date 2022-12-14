@@ -5,7 +5,7 @@ class Game {
     constructor() {
         this.board = new Board();
         this.enemy = new Engine();
-        this.current_color = "white";
+        this.currentColor = "white";
     }
 
     restart() {
@@ -21,22 +21,37 @@ class Game {
             return false;
         }
 
-        if (this.board.getColor(x0, y0) != this.current_color) {
+        if (this.board.getColor(x0, y0) != this.currentColor) {
             return false;
         }
 
+        let piece = this.board.getPiece(x0, y0);
+
+        // Castle
+        if (piece == W_KING && x0 == 4 && x1 == 6) {
+            this.board.move(7, 0, 5, 0);
+        }
+        else if (piece == W_KING && x0 == 4 && x1 == 2) {
+            this.board.move(0, 0, 3, 0);
+        }
+        else if (piece == B_KING && x0 == 4 && x1 == 6) {
+            this.board.move(7, 7, 5, 7);
+        }
+        else if (piece == B_KING && x0 == 4 && x1 == 2) {
+            this.board.move(0, 7, 3, 7);
+        }        
+
         this.board.move(x0, y0, x1, y1);
         
-        let piece = this.board.getPiece(x1, y1);
+        // Pawn promotion
         if (piece == W_PAWN && y1 == 7) {
             this.board.setPiece(x1, y1, W_QUEEN);
         }
-
         if (piece == B_PAWN && y1 == 0) {
             this.board.setPiece(x1, y1, B_QUEEN);
         }
 
-        this.current_color = (this.current_color == "white") ? "black" : "white"
+        this.currentColor = (this.currentColor == "white") ? "black" : "white"
 
         return true;
     }
@@ -49,8 +64,6 @@ class Game {
     validMovement(x0, y0, x1, y1) {
         let validMoves = pieceMoves(x0, y0, this.board)
         return validMoves.some(e => (e.x == x1 && e.y == y1))
-        
-        // includes({x:x1, y:y1})
     }
 }
 
@@ -229,7 +242,7 @@ function queenMoves(x, y, board) {
     return rook.concat(bishop);
 }
 
-function kingMoves(x, y, board) {
+function kingMoves(x, y, board, castleStatus) {
     let moves = new Array();
     let existing_moves = [
         {x:(x-1), y:(y-1)},
@@ -254,6 +267,46 @@ function kingMoves(x, y, board) {
         }
 
         moves.push(move);
+    }
+
+    moves = moves.concat(castleMoves(x, y, board));
+    return moves;
+}
+
+function castleMoves(x, y, board) {
+    let moves = new Array();
+
+    if (board.getColor(x, y) == "white") {
+        if (board.castleStatus.whiteShort 
+            && board.getColor(5, 0) == "" 
+            && board.getColor(6, 0) == "") 
+        {
+            moves.push({x:6, y:0})
+        }
+    
+        if (board.castleStatus.whiteLong
+            && board.getColor(1, 0) == "" 
+            && board.getColor(2, 0) == "" 
+            && board.getColor(3, 0) == "")
+        {
+            moves.push({x:2, y:0})
+        }
+    }
+    else if (board.getColor(x, y) == "black") {
+        if (board.castleStatus.blackShort 
+            && board.getColor(5, 7) == "" 
+            && board.getColor(6, 7) == "") 
+        {
+            moves.push({x:6, y:7})
+        }
+    
+        if (board.castleStatus.blackLong
+            && board.getColor(1, 7) == "" 
+            && board.getColor(2, 7) == "" 
+            && board.getColor(3, 7) == "")
+        {
+            moves.push({x:2, y:7})
+        }
     }
 
     return moves;

@@ -64,7 +64,7 @@ const releaseHandler = function (e) {
     )
 
     if (moved) {
-        game.letEngineMove();
+        // game.letEngineMove();
     }
 
     document.removeEventListener("mousemove", moveHandler);    

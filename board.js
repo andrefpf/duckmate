@@ -24,10 +24,19 @@ function isBlack(piece) {
     return black_pieces.includes(piece);
 }    
 
+class CastleStatus {
+    constructor() {
+        this.whiteShort = true;
+        this.whiteLong = true;
+        this.blackShort = true;
+        this.blackLong = true;
+    }
+}
 
 class Board {
     constructor() {
         this.table = document.getElementById("chess-board");
+        this.castleStatus = new CastleStatus();
         this.rearrange();
     }
 
