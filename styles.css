@@ -3,6 +3,10 @@
     src: url(fonts/merifont.ttf);
 }
 
+body {
+    background: #294244;
+}
+
 .chess-board { border-spacing: 0; margin: auto;}
 .chess-board .light {background: #E1FAF9;}
 .chess-board .dark {background: #277C82; touch-action: none;}
@@ -22,9 +26,34 @@
     user-select: none;
 }
 
-body {
+.status-box {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+
+    left: 0;
+    right: 0;
+    top: 30vmin;
+    /* bottom: 0; */
+    
+    width: 70vmin;
+    padding: 2em;
+
+    text-align: center;
     background: #294244;
 }
+
+.status-box h1 { color: #E1FAF9; }
+.status-box p {color: #E1FAF9;}
+.status-box button {
+    border: none;
+    padding: 1.5em 1.5em;
+    width: 80%;
+
+    background: #277C82; 
+    color: #E1FAF9;
+}
+
 
 .drag {
     position: absolute;

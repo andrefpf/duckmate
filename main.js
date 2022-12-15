@@ -4,6 +4,10 @@ var originIndex, targetIndex;
 var game;
 var x, y;
 
+const restartGame = function () {
+    game.restart();
+}
+
 const grabHandler = function (e) {
     let draggablePiece = document.getElementById("draggable-piece");
     draggablePiece.innerText = e.target.innerText;
@@ -64,7 +68,7 @@ const releaseHandler = function (e) {
     )
 
     if (moved) {
-        // game.letEngineMove();
+        game.letEngineMove();
     }
 
     document.removeEventListener("mousemove", moveHandler);    

@@ -9,7 +9,8 @@ class Game {
     }
 
     restart() {
-        this.board.rearange();
+        this.currentColor = "white";
+        this.board.restart();
     }
 
     move(x0, y0, x1, y1) {
@@ -53,7 +54,19 @@ class Game {
 
         this.currentColor = (this.currentColor == "white") ? "black" : "white"
 
+        this.handleGameOver();
+        
         return true;
+    }
+
+    handleGameOver() {
+        if (!this.board.getWhitePieces().some(element => element.piece == W_KING)) {
+            return this.board.gameOver("Pretas vencem!")
+        }
+
+        if (!this.board.getBlackPieces().some(element => element.piece == B_KING)) {
+            return this.board.gameOver("Brancas vencem!")
+        }
     }
 
     letEngineMove() {
@@ -62,8 +75,8 @@ class Game {
     }
 
     validMovement(x0, y0, x1, y1) {
-        let validMoves = pieceMoves(x0, y0, this.board)
-        return validMoves.some(e => (e.x == x1 && e.y == y1))
+        let validMoves = pieceMoves(x0, y0, this.board);
+        return validMoves.some(e => (e.x == x1 && e.y == y1));
     }
 }
 
@@ -89,6 +102,8 @@ function pieceMoves(x, y, board) {
             return whitePawnMoves(x, y, board);
         case B_PAWN:
             return blackPawnMoves(x, y, board);
+        default:
+            return [];
         }
 }
 
@@ -351,7 +366,9 @@ function whitePawnMoves(x, y, board) {
     }
     
     if (y == 1) {
-        moves.push({x:x, y:(y+2)})
+        if (board.getColor(x, y+2) == "") {
+            moves.push({x:x, y:(y+2)})
+        }
     }
 
     if (board.getColor(x, y+1) == "") {
@@ -381,7 +398,9 @@ function blackPawnMoves(x, y, board) {
     }
 
     if (y == 6) {
-        moves.push({x:x, y:(y-2)})
+        if (board.getColor(x, y-2) == "") {
+            moves.push({x:x, y:(y-2)})
+        }
     }
 
     if (board.getColor(x, y-1) == "") {

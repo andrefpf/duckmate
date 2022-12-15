@@ -36,8 +36,9 @@ class CastleStatus {
 class Board {
     constructor() {
         this.table = document.getElementById("chess-board");
+        this.statusBox = document.getElementById("status-box");
         this.castleStatus = new CastleStatus();
-        this.rearrange();
+        this.restart();
     }
 
     move(x0, y0, x1, y1) {
@@ -49,6 +50,17 @@ class Board {
 
         this.setPiece(x0, y0, "");
         this.setPiece(x1, y1, data);
+    }
+
+    restart() {
+        this.statusBox.style.display = "none";
+        this.rearrange();
+    }
+    
+    gameOver(status="") {
+        this.statusBox.querySelector("p").innerText = status;
+        this.statusBox.style.removeProperty("display");
+        this.statusBox;
     }
 
     setPiece(x, y, text) {
@@ -102,7 +114,17 @@ class Board {
         return pieces;
     }
 
+    clear() {
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
+                this.setPiece(i, j, "");
+            }
+        }
+    }
+
     rearrange() {
+        this.clear();
+
         this.setPiece(0, 7, B_ROOK);
         this.setPiece(1, 7, B_KNIGHT);
         this.setPiece(2, 7, B_BISHOP);
