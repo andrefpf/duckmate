@@ -34,6 +34,17 @@ class EngineBoard {
         return this.data[y*8 + x];
     }
 
+    getColor(x, y) {
+        let piece = this.getPiece(x, y);
+        if (isWhite(piece)) {
+            return "white";
+        }
+        else if (isBlack(piece)) {
+            return "black";
+        }
+        return "";    
+    }
+
     pieceValue(piece) {
         switch (piece) {
             case W_KING:
@@ -67,6 +78,15 @@ class EngineBoard {
 
     evaluateStatic() {
         let score = 0;
+
+        score += this.evaluatePieceValues();
+        score += this.evaluateCenterDomination();
+        
+        return score;        
+    }
+
+    evaluatePieceValues() {
+        let score = 0;
         let piece;
 
         for (let i=0; i<8; i++) {
@@ -76,43 +96,32 @@ class EngineBoard {
             }
         }
         
-        return score;
+        return score;        
+    }
+
+    evaluateCenterDomination() {
+        let score = 0;
+        let color;
+
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
+                color = this.getColor(i, j);
+                if (color == "white") {
+                    score += i*(i-7) * 0.2;
+                    score += j*(j-7) * 0.2;
+                }
+                else if (color == "black") {
+                    score -= i*(i-7) * 0.2;
+                    score -= j*(j-7) * 0.2;
+                }
+            }
+        }
         
-        // from -1 to 1
-        // return (Math.random() - 0.5) * 2
+        return score;        
     }
 }
 
 class Engine {
-    // getMove(board) {
-    //     let move;
-
-    //     let pieces = board.getBlackPieces();
-    //     let targets;
-    //     let randomOrigin;
-    //     let randomTarget;
-        
-    //     while (true) {
-    //         randomOrigin = pickRandom(pieces);
-    //         targets = pieceMoves(randomOrigin.x, randomOrigin.y, board);
-            
-    //         if (targets.length == 0) {
-    //             // Can't move, try again
-    //             continue;
-    //         }
-            
-    //         randomTarget = pickRandom(targets);
-    //         move = {
-    //             x0: randomOrigin.x,
-    //             y0: randomOrigin.y,
-    //             x1: randomTarget.x,
-    //             y1: randomTarget.y,
-    //         };
-    
-    //         return move;
-    //     }
-    // }
-
     allMoves(pieces, board) {
         let moves = new Array();
 
@@ -128,10 +137,17 @@ class Engine {
     getMove(board) {
         let pieces = board.getBlackPieces();
         let moves = this.allMoves(pieces, board);
-        return this.selectBestMove(moves, board);
+        return this.selectBestMove(moves, board, "black");
+    }
+    
+    recursiveMoveSelection(board, color, interation) {
+        let pieces = (color == "white") ? board.getWhitePieces() : board.getBlackPieces();
+        let moves = this.allMoves(pieces, board);
+        let next_color = color == "white"? "black" : "white";
+
     }
 
-    selectBestMove(moves, board) {
+    selectBestMove(moves, board, color) {
         let bestMove = null;
         let bestScore;
         let tmpScore;
@@ -142,12 +158,26 @@ class Engine {
         for (let move of moves) {
             tmpScore = originalBoard.move(move.x0, move.y0, move.x1, move.y1).evaluateStatic();
 
-            if (bestMove === null || bestScore > tmpScore) {
-                bestMove = move;
-                bestScore = tmpScore;
+            if (color == "white") {
+                if (bestMove === null 
+                    || bestScore > tmpScore 
+                    || (bestScore == tmpScore && Math.random() > 0.5)) 
+                {
+                    bestMove = move;
+                    bestScore = tmpScore;
+                }
+            }
+            else if (color == "black") {
+                if (bestMove === null 
+                    || bestScore < tmpScore 
+                    || (bestScore == tmpScore && Math.random() > 0.5)) 
+                {
+                    bestMove = move;
+                    bestScore = tmpScore;
+                }
             }
         }
-        console.log(bestMove);
+
         return bestMove;
     }
 }
