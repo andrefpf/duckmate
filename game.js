@@ -1,15 +1,12 @@
-WHITE = 0
-BLACK = 1
-
 class Game {
     constructor() {
         this.board = new Board();
-        this.enemy = new Engine();
-        this.currentColor = "white";
+        this.engine = new Engine();
+        this.currentColor = WHITE;
     }
 
     restart() {
-        this.currentColor = "white";
+        this.currentColor = WHITE;
         this.board.restart();
     }
 
@@ -51,11 +48,12 @@ class Game {
         if (piece == B_PAWN && y1 == 0) {
             this.board.setPiece(x1, y1, B_QUEEN);
         }
-
-        this.currentColor = (this.currentColor == "white") ? "black" : "white"
-
-        this.handleGameOver();
         
+        let engineBoard = new EngineBoard();
+        engineBoard.fromBoard(this.board);
+
+        this.currentColor = (this.currentColor == WHITE) ? BLACK : WHITE
+        this.handleGameOver();
         return true;
     }
 
@@ -70,7 +68,7 @@ class Game {
     }
 
     letEngineMove() {
-        let move = this.enemy.getMove(this.board);
+        let move = this.engine.getMove(this.board);
         this.move(move.x0, move.y0, move.x1, move.y1);
     }
 
@@ -291,7 +289,7 @@ function kingMoves(x, y, board, castleStatus) {
 function castleMoves(x, y, board) {
     let moves = new Array();
 
-    if (board.getColor(x, y) == "white") {
+    if (board.getColor(x, y) == WHITE) {
         if (board.castleStatus.whiteShort 
             && board.getColor(5, 0) == "" 
             && board.getColor(6, 0) == "") 
@@ -307,7 +305,7 @@ function castleMoves(x, y, board) {
             moves.push({x:2, y:0})
         }
     }
-    else if (board.getColor(x, y) == "black") {
+    else if (board.getColor(x, y) == BLACK) {
         if (board.castleStatus.blackShort 
             && board.getColor(5, 7) == "" 
             && board.getColor(6, 7) == "") 
@@ -376,13 +374,13 @@ function whitePawnMoves(x, y, board) {
     }
 
     if (x > 0) {
-        if (board.getColor(x-1, y+1) == "black") {
+        if (board.getColor(x-1, y+1) == BLACK) {
             moves.push({x:(x-1), y:(y+1)})
         }
     }
 
     if (x < 7) {
-        if (board.getColor(x+1, y+1) == "black") {
+        if (board.getColor(x+1, y+1) == BLACK) {
             moves.push({x:(x+1), y:(y+1)})
         }
     }
@@ -408,13 +406,13 @@ function blackPawnMoves(x, y, board) {
     }
 
     if (x > 0) {
-        if (board.getColor(x-1, y-1) == "white") {
+        if (board.getColor(x-1, y-1) == WHITE) {
             moves.push({x:(x-1), y:(y-1)})
         }
     }
     
     if (x < 7) {
-        if (board.getColor(x+1, y-1) == "white") {
+        if (board.getColor(x+1, y-1) == WHITE) {
             moves.push({x:(x+1), y:(y-1)})
         }
     }

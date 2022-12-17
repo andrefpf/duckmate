@@ -13,6 +13,9 @@ const B_KING = "l";
 const B_PAWN = "o";
 const DUCK = "🐥";
 
+const WHITE = "white";
+const BLACK = "black";
+
 white_pieces = [W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_PAWN];
 black_pieces = [B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_PAWN];
 
@@ -42,14 +45,41 @@ class Board {
     }
 
     move(x0, y0, x1, y1) {
-        let data = this.getPiece(x0, y0);
+        let piece = this.getPiece(x0, y0);
 
-        if (data == "") {
+        if (piece == "") {
             return
         }
 
+        // handle castles
+        if (piece == W_KING) {
+            this.castleStatus.whiteLong = false;
+            this.castleStatus.whiteShort = false;
+        }
+        else if (piece == B_KING) {
+            this.castleStatus.blackLong = false;
+            this.castleStatus.blackShort = false;
+        }
+        
+        if (piece == W_ROOK) {
+            if (x0 == 0) {
+                this.castleStatus.whiteLong = false;
+            }
+            else if (x0 == 7) {
+                this.castleStatus.whiteLong = false;
+            }
+        }
+        else if (piece == B_ROOK) {
+            if (x0 == 0) {
+                this.castleStatus.blackLong = false;
+            }
+            else if (x0 == 7) {
+                this.castleStatus.blackLong = false;
+            }
+        }
+
         this.setPiece(x0, y0, "");
-        this.setPiece(x1, y1, data);
+        this.setPiece(x1, y1, piece);
     }
 
     restart() {
@@ -74,10 +104,10 @@ class Board {
     getColor(x, y) {
         let piece = this.getPiece(x, y);
         if (isWhite(piece)) {
-            return "white";
+            return WHITE;
         }
         else if (isBlack(piece)) {
-            return "black";
+            return BLACK;
         }
         return "";    
     }
@@ -123,7 +153,7 @@ class Board {
     }
 
     rearrange() {
-        this.clear();
+        this.clear();        
 
         this.setPiece(0, 7, B_ROOK);
         this.setPiece(1, 7, B_KNIGHT);
