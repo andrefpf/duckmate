@@ -223,20 +223,24 @@ class Engine {
         let bestMove = null;
         let bestScore;
         let tmpScore;
-
+        
+        let randomError;
         let pieces = (color == WHITE) ? board.getWhitePieces() : board.getBlackPieces();
         let moves = this.allMoves(pieces, board);
-
+        
         total_combinations += moves.length
-
+        
+        let acceptableError = 1;
         for (let move of moves) {
             tmpScore = this.recursiveEvaluatePosition(
                 board.move(move.x0, move.y0, move.x1, move.y1), 
                 color, 
                 interations
-            );
-
-            if (bestMove === null || bestScore < tmpScore) {
+                );
+            
+            // Add some randomness to make the game funnier
+            randomError = (Math.random() - 0.5) * 2;
+            if (bestMove === null || bestScore < (tmpScore + randomError)) {
                 bestMove = move;
                 bestScore = tmpScore;
             }
@@ -267,27 +271,4 @@ class Engine {
 
         return - enemyScore;
     }
-
-    // selectBestMove(moves, board, color) {
-    //     let bestMove = null;
-    //     let bestScore;
-    //     let tmpScore;
-
-    //     let originalBoard = new EngineBoard();
-    //     originalBoard.fromBoard(board);
-
-    //     for (let move of moves) {
-    //         tmpScore = originalBoard.move(move.x0, move.y0, move.x1, move.y1).evaluateStatic(color);
-
-    //         if (bestMove === null 
-    //             || bestScore < tmpScore 
-    //             || (bestScore == tmpScore && Math.random() > 0.5)) 
-    //         {
-    //             bestMove = move;
-    //             bestScore = tmpScore;
-    //         }
-    //     }
-
-    //     return bestMove;
-    // }
 }

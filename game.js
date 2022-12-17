@@ -3,9 +3,11 @@ class Game {
         this.board = new Board();
         this.engine = new Engine();
         this.currentColor = WHITE;
+        this.running = true;
     }
 
     restart() {
+        this.running = true;
         this.currentColor = WHITE;
         this.board.restart();
     }
@@ -59,10 +61,12 @@ class Game {
 
     handleGameOver() {
         if (!this.board.getWhitePieces().some(element => element.piece == W_KING)) {
+            this.running = false;
             return this.board.gameOver("Pretas vencem!")
         }
-
+        
         if (!this.board.getBlackPieces().some(element => element.piece == B_KING)) {
+            this.running = false;
             return this.board.gameOver("Brancas vencem!")
         }
     }

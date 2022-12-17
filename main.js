@@ -67,7 +67,7 @@ const releaseHandler = function (e) {
         7 - Math.floor(targetIndex / 8), 
     )
 
-    if (moved) {
+    if (moved && game.running) {
         game.letEngineMove();
     }
 
