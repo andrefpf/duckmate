@@ -368,7 +368,7 @@ function whitePawnMoves(x, y, board) {
     }
     
     if (y == 1) {
-        if (board.getColor(x, y+2) == "") {
+        if (board.getColor(x, y+1) == "" && board.getColor(x, y+2) == "") {
             moves.push({x:x, y:(y+2)})
         }
     }
@@ -400,7 +400,7 @@ function blackPawnMoves(x, y, board) {
     }
 
     if (y == 6) {
-        if (board.getColor(x, y-2) == "") {
+        if (board.getColor(x, y-1) == "" && board.getColor(x, y-2) == "") {
             moves.push({x:x, y:(y-2)})
         }
     }
