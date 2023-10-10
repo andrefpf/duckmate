@@ -164,6 +164,8 @@ class Board {
         this.setPiece(6, 7, B_KNIGHT);
         this.setPiece(7, 7, B_ROOK);
 
+        this.setPiece(5, 5, DUCK);
+
         for (let i=0; i<8; i++) {
             this.setPiece(i, 6, B_PAWN);
             this.setPiece(i, 1, W_PAWN);

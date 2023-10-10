@@ -3,6 +3,7 @@ class Game {
         this.board = new Board();
         this.engine = new Engine();
         this.currentColor = WHITE;
+        this.duckMove = false;
         this.running = true;
     }
 
@@ -14,6 +15,7 @@ class Game {
 
     move(x0, y0, x1, y1) {
         if (!this.validMovement(x0, y0, x1, y1)) {
+            console.log("bla");
             return false;
         }
 
@@ -21,11 +23,14 @@ class Game {
             return false;
         }
 
-        if (this.board.getColor(x0, y0) != this.currentColor) {
+        let piece = this.board.getPiece(x0, y0);
+
+        if (this.duckMove && piece != DUCK) {
+            return false
+        }
+        else if (!this.duckMove && this.board.getColor(x0, y0) != this.currentColor) {
             return false;
         }
-
-        let piece = this.board.getPiece(x0, y0);
 
         // Castle
         if (piece == W_KING && x0 == 4 && x1 == 6) {
@@ -42,7 +47,7 @@ class Game {
         }        
 
         this.board.move(x0, y0, x1, y1);
-        
+
         // Pawn promotion
         if (piece == W_PAWN && y1 == 7) {
             this.board.setPiece(x1, y1, W_QUEEN);
@@ -50,11 +55,14 @@ class Game {
         if (piece == B_PAWN && y1 == 0) {
             this.board.setPiece(x1, y1, B_QUEEN);
         }
-        
-        let engineBoard = new EngineBoard();
-        engineBoard.fromBoard(this.board);
 
-        this.currentColor = (this.currentColor == WHITE) ? BLACK : WHITE
+        if (piece == DUCK) {
+            this.duckMove = false;
+            this.currentColor = (this.currentColor == WHITE) ? BLACK : WHITE
+        } else {
+            this.duckMove = true;
+        }
+
         this.handleGameOver();
         return true;
     }
@@ -77,8 +85,11 @@ class Game {
     }
 
     validMovement(x0, y0, x1, y1) {
+        let origin_piece = this.board.getPiece(x0, y0);
+        let target_piece = this.board.getPiece(x1, y1);
+        let validDuckMove = (origin_piece == DUCK) && (target_piece == "");
         let validMoves = pieceMoves(x0, y0, this.board);
-        return validMoves.some(e => (e.x == x1 && e.y == y1));
+        return validDuckMove || validMoves.some(e => (e.x == x1 && e.y == y1));
     }
 }
 

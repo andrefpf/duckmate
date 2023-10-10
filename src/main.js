@@ -67,9 +67,9 @@ const releaseHandler = function (e) {
         7 - Math.floor(targetIndex / 8), 
     )
 
-    if (moved && game.running) {
-        game.letEngineMove();
-    }
+    // if (moved && game.running) {
+    //     game.letEngineMove();
+    // }
 
     document.removeEventListener("mousemove", moveHandler);    
     document.removeEventListener("mouseup", releaseHandler);
